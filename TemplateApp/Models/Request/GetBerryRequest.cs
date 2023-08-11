@@ -1,4 +1,6 @@
 ﻿using Blackbird.Applications.Sdk.Common;
+using Blackbird.Applications.Sdk.Common.Dynamic;
+using TemplateApp.DataSourceHandlers;
 
 namespace TemplateApp.Models.Request;
 
@@ -9,5 +11,7 @@ public class GetBerryRequest
 {
     // Properties must have display attributes which contain user-friendly name of variable
     [Display("Berry name")]
+    // Applying data source handler to the property
+    [DataSource(typeof(AsyncDataSourceHandler))]
     public string BerryName { get; set; }
 }

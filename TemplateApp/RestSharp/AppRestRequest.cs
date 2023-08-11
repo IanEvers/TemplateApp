@@ -1,5 +1,6 @@
 ﻿using Blackbird.Applications.Sdk.Common.Authentication;
 using RestSharp;
+using TemplateApp.Constants;
 
 namespace TemplateApp.RestSharp;
 
@@ -14,7 +15,7 @@ public class AppRestRequest : RestRequest
         IEnumerable<AuthenticationCredentialsProvider> creds) : base(resource, method)
     {
         // Extract needed API Keys or tokens and add them to headers
-        var authHeader = creds.First(x => x.KeyName == "Authorization");
+        var authHeader = creds.First(x => x.KeyName == CredsNames.ApiToken);
         this.AddHeader(authHeader.KeyName, authHeader.Value);
     }
 }

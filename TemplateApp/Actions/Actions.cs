@@ -55,7 +55,7 @@ public class Actions
     /// <param name="input">Action parameter with the data for creation a new item</param>
     /// <returns>Newly created item</returns>
     [Action("Get berry", Description = "Get speicifc berry by ID")]
-    public Task<Berry> AddItem(
+    public Task<Berry> GetBerry(
         IEnumerable<AuthenticationCredentialsProvider> creds,
         [ActionParameter] GetBerryRequest input)
     {

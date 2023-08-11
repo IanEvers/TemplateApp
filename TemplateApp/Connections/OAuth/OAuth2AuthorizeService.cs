@@ -1,5 +1,5 @@
 ﻿using Blackbird.Applications.Sdk.Common.Authentication.OAuth2;
-using Microsoft.AspNetCore.WebUtilities;
+using Blackbird.Applications.Sdk.Utils.Extensions.String;
 using TemplateApp.Constants;
 
 namespace TemplateApp.Connections.OAuth;
@@ -22,6 +22,6 @@ public class OAuth2AuthorizeService : IOAuth2AuthorizeService
         };
         
         // Creating url with query parameters
-        return QueryHelpers.AddQueryString(Urls.Authorize, parameters);
+        return Urls.Authorize.WithQuery(parameters);
     }
 }

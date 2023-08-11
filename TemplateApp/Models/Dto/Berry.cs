@@ -8,6 +8,7 @@ namespace TemplateApp.Models.Dto;
 public class Berry
 {
     // Properties must have display attributes which contain user-friendly name of variable
+    [Display("ID")] public string Id { get; set; }
     [Display("Name")] public string Name { get; set; }
 
     [Display("URL")] public string Url { get; set; }

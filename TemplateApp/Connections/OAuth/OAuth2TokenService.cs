@@ -57,7 +57,7 @@ public class OAuth2TokenService : IOAuth2TokenService
             { "grant_type", "refresh_token" },
             { "client_id", ApplicationConstants.ClientId },
             { "client_secret", ApplicationConstants.ClientSecret },
-            { "refresh_token", values[CredsNames.RefreshToken] },
+            { "refresh_token", values[CredsNames.RefreshToken] }
         };
 
         return GetTokenData(bodyParameters, cancellationToken);
@@ -71,7 +71,7 @@ public class OAuth2TokenService : IOAuth2TokenService
     {
         var bodyParameters = new Dictionary<string, string>
         {
-            { "token", values[CredsNames.AccessToken] },
+            { "token", values[CredsNames.AccessToken] }
         };
 
         return ExecuteTokenRequest(bodyParameters, CancellationToken.None);

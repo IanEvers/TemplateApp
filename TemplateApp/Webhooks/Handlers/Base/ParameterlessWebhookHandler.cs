@@ -32,7 +32,7 @@ public abstract class ParameterlessWebhookHandler : IWebhookEventHandler
         {
             // Webhook bird url that will receive webhook data
             Url = values["payloadUrl"],
-            Event = SubscriptionEvent,
+            Event = SubscriptionEvent
         });
 
         return Client.ExecuteWithHandling(request);
@@ -48,7 +48,7 @@ public abstract class ParameterlessWebhookHandler : IWebhookEventHandler
         request.AddJsonBody(new AddWebhookRequest
         {
             Url = values["payloadUrl"],
-            Event = SubscriptionEvent,
+            Event = SubscriptionEvent
         });
 
         return Client.ExecuteWithHandling(request);

@@ -37,10 +37,14 @@ public class ConnectionDefinition : IConnectionDefinition
                 new(CredsNames.ApiToken)
                 {
                     // Property user-friendly name that will be displayed on the UI
-                    DisplayName = "API token"
+                    DisplayName = "API token",
+                    
+                    // Description of the connection property,
+                    // perhaps with some guidelines on how to find it in the service
+                    Description = "You can create API token in your profile settings, on the API tab"
                 }
             }
-        },
+        }
     };
 
     
