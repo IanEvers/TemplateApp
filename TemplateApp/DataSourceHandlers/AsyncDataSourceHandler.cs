@@ -3,6 +3,11 @@ using Blackbird.Applications.Sdk.Common.Authentication;
 using Blackbird.Applications.Sdk.Common.Dynamic;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.Sdk.Utils.Extensions.String;
+using RestSharp;
+using TemplateApp.Constants;
+using TemplateApp.Models.Dto;
+using TemplateApp.Models.Response;
+using TemplateApp.RestSharp;
 
 namespace TemplateApp.DataSourceHandlers;
 
@@ -15,8 +20,10 @@ public class AsyncDataSourceHandler : BaseInvocable, IAsyncDataSourceHandler
     private IEnumerable<AuthenticationCredentialsProvider> Creds =>
         InvocationContext.AuthenticationCredentialsProviders;
 
+    private AppRestClient Client { get; }
     public AsyncDataSourceHandler(InvocationContext invocationContext) : base(invocationContext)
     {
+        Client = new();
     }
 
     /// <summary>
@@ -27,10 +34,10 @@ public class AsyncDataSourceHandler : BaseInvocable, IAsyncDataSourceHandler
     public async Task<Dictionary<string, string>> GetDataAsync(DataSourceContext context,
         CancellationToken cancellationToken)
     {
-        var actions = new Actions.Actions();
-        var items = await actions.ListItems(Creds);
+        var request = new AppRestRequest(ApiEndpoints.Berry, Method.Get, Creds);
+        var response = await Client.ExecuteWithHandling<ListResponse<Berry>>(request);
 
-        return items.Items
+        return response.Results
                 // We need to pay attention to SearchString in the context
                 // So that we return only values that match user search request
             .Where(x => context.SearchString == null ||

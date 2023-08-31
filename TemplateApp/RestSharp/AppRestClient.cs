@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using TemplateApp.Constants;
-using TemplateApp.Models.Response;
 
 namespace TemplateApp.RestSharp;
 

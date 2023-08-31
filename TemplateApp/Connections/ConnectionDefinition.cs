@@ -68,7 +68,7 @@ public class ConnectionDefinition : IConnectionDefinition
         var apiKey = values.First(v => v.Key == CredsNames.ApiToken);
         yield return new AuthenticationCredentialsProvider(
             AuthenticationCredentialsRequestLocation.Header,
-            "x-api-key",
+            apiKey.Key,
             apiKey.Value
         );
     }
