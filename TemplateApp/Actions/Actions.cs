@@ -1,10 +1,12 @@
 ﻿using System.Net.Mime;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
-using Blackbird.Applications.Sdk.Common.Authentication;
 using Blackbird.Applications.Sdk.Common.Invocation;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using TemplateApp.Constants;
+using TemplateApp.Invocables;
 using TemplateApp.Models.Dto;
 using TemplateApp.Models.Request;
 using TemplateApp.Models.Response;
@@ -16,24 +18,12 @@ namespace TemplateApp.Actions;
 /// Contains list of actions
 /// </summary>
 [ActionList]
-
-// Extending BaseInvocable class that contains context information (Flight ID, Bird ID, User credentials, etc.)
-public class Actions : BaseInvocable
+public class Actions : AppInvocable
 {
-    #region Properties
-
-    private AppRestClient Client { get; }
-
-    private IEnumerable<AuthenticationCredentialsProvider> Creds =>
-        InvocationContext.AuthenticationCredentialsProviders;
-
-    #endregion
-
     #region Constructors
 
     public Actions(InvocationContext invocationContext) : base(invocationContext)
     {
-        Client = new();
     }
 
     #endregion
@@ -53,6 +43,15 @@ public class Actions : BaseInvocable
         return new(response.Results);
     }
 
+    [Action("Convert Objects", Description = "Convert Objects")]
+    public string ConvertObject([ActionParameter] object objToConvert, [ActionParameter] string jsonPath)
+    {
+        var json = JsonConvert.SerializeObject(objToConvert);
+        var jObj = JObject.Parse(json);
+        var value = jObj.SelectToken(jsonPath);
+        return value.ToString();
+    }
+
     /// <summary>
     /// Creates a new item
     /// </summary>
@@ -65,7 +64,7 @@ public class Actions : BaseInvocable
 
         return Client.ExecuteWithHandling<Berry>(request);
     }
-    
+
     /// <summary>
     /// Demonstration of working with files in BlackBird
     /// </summary>
@@ -80,7 +79,7 @@ public class Actions : BaseInvocable
         // Throwing error if status code is not successful
         if (!response.IsSuccessStatusCode)
             throw new($"Could not download your file; Code: {response.StatusCode}");
-            
+
         // Passing file bytes to BlackBird's file type
         return new(new(response.RawBytes)
         {
@@ -88,8 +87,8 @@ public class Actions : BaseInvocable
             // Taking file's content type from the request headers
             ContentType = response.ContentType ?? MediaTypeNames.Application.Octet
         });
-    }    
-    
+    }
+
     /// <summary>
     /// Creates action callback that can be received later in a BlackBird webhook
     /// </summary>

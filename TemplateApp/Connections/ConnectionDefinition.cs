@@ -39,6 +39,8 @@ public class ConnectionDefinition : IConnectionDefinition
                     // Property user-friendly name that will be displayed on the UI
                     DisplayName = "API token",
                     
+                    // Setting this flag to true hides token input, replacing each its character with •
+                    Sensitive = true,
                     // Description of the connection property,
                     // perhaps with some guidelines on how to find it in the service
                     Description = "You can create API token in your profile settings, on the API tab"

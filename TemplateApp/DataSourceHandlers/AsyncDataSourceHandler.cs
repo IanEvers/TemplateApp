@@ -1,10 +1,9 @@
-using Blackbird.Applications.Sdk.Common;
-using Blackbird.Applications.Sdk.Common.Authentication;
 using Blackbird.Applications.Sdk.Common.Dynamic;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.Sdk.Utils.Extensions.String;
 using RestSharp;
 using TemplateApp.Constants;
+using TemplateApp.Invocables;
 using TemplateApp.Models.Dto;
 using TemplateApp.Models.Response;
 using TemplateApp.RestSharp;
@@ -13,17 +12,11 @@ namespace TemplateApp.DataSourceHandlers;
 
 /// <summary>
 /// Data source handler for asynchronous dynamic inputs.
-/// Extends BaseInvocable class that contains all of the context data
 /// </summary>
-public class AsyncDataSourceHandler : BaseInvocable, IAsyncDataSourceHandler
+public class AsyncDataSourceHandler : AppInvocable, IAsyncDataSourceHandler
 {
-    private IEnumerable<AuthenticationCredentialsProvider> Creds =>
-        InvocationContext.AuthenticationCredentialsProviders;
-
-    private AppRestClient Client { get; }
     public AsyncDataSourceHandler(InvocationContext invocationContext) : base(invocationContext)
     {
-        Client = new();
     }
 
     /// <summary>
@@ -38,11 +31,10 @@ public class AsyncDataSourceHandler : BaseInvocable, IAsyncDataSourceHandler
         var response = await Client.ExecuteWithHandling<ListResponse<Berry>>(request);
 
         return response.Results
-                // We need to pay attention to SearchString in the context
-                // So that we return only values that match user search request
+            // We need to pay attention to SearchString in the context
+            // So that we return only values that match user search request
             .Where(x => context.SearchString == null ||
                         x.Name.Contains(context.SearchString, StringComparison.OrdinalIgnoreCase))
             .ToDictionary(x => x.Name, x => x.Name.ToPascalCase());
-
     }
 }
