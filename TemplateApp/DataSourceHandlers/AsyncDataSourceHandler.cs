@@ -12,6 +12,7 @@ namespace TemplateApp.DataSourceHandlers;
 
 /// <summary>
 /// Data source handler for asynchronous dynamic inputs.
+/// It provides static data on the UI, so that user can choose values from the dropdown instead of printing it manually.
 /// </summary>
 public class AsyncDataSourceHandler : AppInvocable, IAsyncDataSourceHandler
 {

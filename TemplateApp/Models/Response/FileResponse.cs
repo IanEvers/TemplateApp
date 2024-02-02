@@ -1,6 +1,6 @@
-using File = Blackbird.Applications.Sdk.Common.Files.File;
+using Blackbird.Applications.Sdk.Common.Files;
 
 namespace TemplateApp.Models.Response;
 
 // File type for managing files in BlackBird
-public record FileResponse(File File);
+public record FileResponse(FileReference File);

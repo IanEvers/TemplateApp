@@ -1,6 +1,7 @@
 ﻿using System.Net.Mime;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
+using Blackbird.Applications.Sdk.Common.Files;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -70,23 +71,16 @@ public class Actions : AppInvocable
     /// </summary>
     /// <param name="input">Action parameter with the data for downloading the file</param>
     /// <returns>File data</returns>
-    [Action("Download file", Description = "Download specific file")]
-    public async Task<FileResponse> DownloadFile([ActionParameter] DownloadFileRequest input)
+    [Action("Download file by URL", Description = "Download specific file by URL")]
+    public Task<FileResponse> DownloadFileByUrl([ActionParameter] DownloadFileRequest input)
     {
         var request = new RestRequest(input.FileUrl);
-        var response = await Client.ExecuteAsync(request);
 
-        // Throwing error if status code is not successful
-        if (!response.IsSuccessStatusCode)
-            throw new($"Could not download your file; Code: {response.StatusCode}");
-
-        // Passing file bytes to BlackBird's file type
-        return new(new(response.RawBytes)
-        {
-            Name = input.FileName,
-            // Taking file's content type from the request headers
-            ContentType = response.ContentType ?? MediaTypeNames.Application.Octet
-        });
+        // Creating file instance that will be asynchronously downloaded by Blackbird
+        var file = new FileReference(new HttpRequestMessage(HttpMethod.Get, input.FileUrl), input.FileName,
+            MediaTypeNames.Application.Octet);
+        
+        return Task.FromResult<FileResponse>(new(file));
     }
 
     /// <summary>
@@ -100,6 +94,15 @@ public class Actions : AppInvocable
         request.AddJsonBody(input);
 
         return Client.ExecuteWithHandling(request);
+    }
+    
+    /// <summary>
+    /// Demonstration of dynamic input with parameters
+    /// </summary>
+    [Action("Dynamic input with parameters", Description = "Demonstration of dynamic input with parameters")]
+    public DataSourceWithParametersRequest CreateCallback([ActionParameter] DataSourceWithParametersRequest input)
+    {
+        return input;
     }
 
     #endregion

@@ -7,9 +7,14 @@ namespace TemplateApp.Models.Dto;
 /// </summary>
 public class Berry
 {
-    // Properties must have display attributes which contain user-friendly name of variable
-    [Display("ID")] public string Id { get; set; }
-    [Display("Name")] public string Name { get; set; }
+    // Properties must have display attributes
+    // which contain user-friendly name and description of the variable
+    [Display("ID", Description = "ID of the Berry")]
+    public string Id { get; set; }
 
-    [Display("URL")] public string Url { get; set; }
+    [Display("Name", Description = "Name of the Berry")]
+    public string Name { get; set; }
+
+    [Display("URL", Description = "URL to Berry's page")]
+    public string Url { get; set; }
 }

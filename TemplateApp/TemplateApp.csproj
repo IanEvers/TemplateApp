@@ -1,14 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <Product>TemplateApp</Product>
+        <Description>An example of Blackbird app</Description>
+        <Version>1.0.0</Version>
+        <AssemblyName>Apps.TemplateApp</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Blackbird.Applications.Sdk.Common" Version="2.2.0-alpha3" />
-      <PackageReference Include="Blackbird.Applications.Sdk.Utils" Version="1.0.4" />
+      <PackageReference Include="Blackbird.Applications.Sdk.Common" Version="2.3.3" />
+      <PackageReference Include="Blackbird.Applications.Sdk.Utils" Version="1.0.22" />
     </ItemGroup>
 
 </Project>
