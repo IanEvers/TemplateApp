@@ -27,7 +27,7 @@ public class WebhookList
     public Task<WebhookResponse<ItemPayload>> OnProjectItemCreated(WebhookRequest webhookRequest)
         => HandlerWebhook<ItemPayload>(webhookRequest);
 
-    /// <summary>
+    /// <summary>web
     /// Receives and processes a callback
     /// </summary>
     [Webhook("On callback received", Description = "On callback received")]
