@@ -1,11 +1,17 @@
-﻿using Blackbird.Applications.Sdk.Common.Authentication.OAuth2;
+﻿using Blackbird.Applications.Sdk.Common;
+using Blackbird.Applications.Sdk.Common.Authentication.OAuth2;
+using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.Sdk.Utils.Extensions.String;
 using TemplateApp.Constants;
 
 namespace TemplateApp.Connections.OAuth;
 
-public class OAuth2AuthorizeService : IOAuth2AuthorizeService 
+public class OAuth2AuthorizeService : BaseInvocable, IOAuth2AuthorizeService 
 {
+    public OAuth2AuthorizeService(InvocationContext invocationContext) : base(invocationContext)
+    {
+    }
+
     /// <summary>
     /// Creates OAuth url for the user
     /// </summary>
@@ -16,7 +22,7 @@ public class OAuth2AuthorizeService : IOAuth2AuthorizeService
         var parameters = new Dictionary<string, string>
         {
             { "client_id",  ApplicationConstants.ClientId},
-            { "redirect_uri", ApplicationConstants.RedirectUri},
+            { "redirect_uri", InvocationContext.UriInfo.ImplicitGrantRedirectUri.ToString()},
             { "scope", ApplicationConstants.Scope },
             { "state", values["state"] }
         };
