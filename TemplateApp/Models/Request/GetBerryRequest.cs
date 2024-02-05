@@ -10,7 +10,7 @@ namespace TemplateApp.Models.Request;
 public class GetBerryRequest
 {
     // Properties must have display attributes which contain user-friendly name of variable
-    [Display("Berry name")]
+    [Display("Berry name", Description = "The name of the berry")]
     // Applying data source handler to the property
     [DataSource(typeof(AsyncDataSourceHandler))]
     public string BerryName { get; set; }

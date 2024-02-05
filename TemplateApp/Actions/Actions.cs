@@ -44,15 +44,6 @@ public class Actions : AppInvocable
         return new(response.Results);
     }
 
-    [Action("Convert Objects", Description = "Convert Objects")]
-    public string ConvertObject([ActionParameter] object objToConvert, [ActionParameter] string jsonPath)
-    {
-        var json = JsonConvert.SerializeObject(objToConvert);
-        var jObj = JObject.Parse(json);
-        var value = jObj.SelectToken(jsonPath);
-        return value.ToString();
-    }
-
     /// <summary>
     /// Creates a new item
     /// </summary>
@@ -74,8 +65,6 @@ public class Actions : AppInvocable
     [Action("Download file by URL", Description = "Download specific file by URL")]
     public Task<FileResponse> DownloadFileByUrl([ActionParameter] DownloadFileRequest input)
     {
-        var request = new RestRequest(input.FileUrl);
-
         // Creating file instance that will be asynchronously downloaded by Blackbird
         var file = new FileReference(new HttpRequestMessage(HttpMethod.Get, input.FileUrl), input.FileName,
             MediaTypeNames.Application.Octet);
@@ -100,7 +89,7 @@ public class Actions : AppInvocable
     /// Demonstration of dynamic input with parameters
     /// </summary>
     [Action("Dynamic input with parameters", Description = "Demonstration of dynamic input with parameters")]
-    public DataSourceWithParametersRequest CreateCallback([ActionParameter] DataSourceWithParametersRequest input)
+    public DataSourceWithParametersRequest DynamicInputWithParameters([ActionParameter] DataSourceWithParametersRequest input)
     {
         return input;
     }
