@@ -1,18 +1,19 @@
-using Blackbird.Applications.Sdk.Utils.Sdk.DataSourceHandlers;
+using Blackbird.Applications.Sdk.Common.Dictionaries;
+using Blackbird.Applications.Sdk.Common.Dynamic;
 
 namespace TemplateApp.DataSourceHandlers;
 
 /// <summary>
-/// Data source handler for dynamic input values
-/// Fetches data synchronously, can be used e.g. for enums
-/// Extends EnumDataHandler class that already has implemented logic for configuring response from enum values
+/// Data source handler for static input values
+/// Fetches static data, can be used e.g. for enums
+/// Implements IStaticDataSourceItemHandler interface
 /// </summary>
-public class SyncDataSourceHandler : EnumDataHandler
+public class SyncDataSourceHandler : IStaticDataSourceItemHandler
 {
-    protected override Dictionary<string, string> EnumValues => new()
-    {
-        { "water_electric", "Water/Electric" },
-        { "fighting_psychic", "Fighting/Psychic" },
-        { "grass_flying", "Grass/Flying" }
-    };
+    public IEnumerable<DataSourceItem> GetData() =>
+    [
+        new("water_electric", "Water/Electric"),
+        new("fighting_psychic", "Fighting/Psychic"),
+        new("grass_flying", "Grass/Flying"),
+    ];
 }

@@ -7,15 +7,6 @@ namespace TemplateApp;
 
 public class Application : BaseInvocable,  IApplication
 {
-    /// <summary>
-    /// Application name
-    /// </summary>
-    public string Name
-    {
-        get => "Application name";
-        set { }
-    }
-    
     private readonly Dictionary<Type, object> _typesInstances;
 
     public Application(InvocationContext invocationContext) : base(invocationContext)

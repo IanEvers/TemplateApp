@@ -3,8 +3,6 @@ using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
 using Blackbird.Applications.Sdk.Common.Files;
 using Blackbird.Applications.Sdk.Common.Invocation;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using RestSharp;
 using TemplateApp.Constants;
 using TemplateApp.Invocables;
@@ -49,7 +47,7 @@ public class Actions : AppInvocable
     /// </summary>
     /// <param name="input">Action parameter with the data for creation a new item</param>
     /// <returns>Newly created item</returns>
-    [Action("Get berry", Description = "Get speicifc berry by ID")]
+    [Action("Get berry", Description = "Get specific berry by ID")]
     public Task<Berry> GetBerry([ActionParameter] GetBerryRequest input)
     {
         var request = new AppRestRequest($"{ApiEndpoints.Berry}/{input.BerryName}", Method.Get, Creds);

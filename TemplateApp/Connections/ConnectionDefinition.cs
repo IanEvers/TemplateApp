@@ -9,7 +9,6 @@ namespace TemplateApp.Connections;
 /// </summary>
 public class ConnectionDefinition : IConnectionDefinition
 {
-    
     /// <summary>
     /// Defines app's connection types
     /// </summary>
@@ -23,14 +22,14 @@ public class ConnectionDefinition : IConnectionDefinition
         //     ConnectionUsage = ConnectionUsage.Actions,
         //     ConnectionProperties = new List<ConnectionProperty>()
         // },
-        
+
         // API token auth example
         new()
         {
             Name = "Developer API token",
             AuthenticationType = ConnectionAuthenticationType.Undefined,
             ConnectionUsage = ConnectionUsage.Actions,
-            
+
             // Specifying properties that we will need for authorization of the app
             ConnectionProperties = new List<ConnectionProperty>
             {
@@ -38,18 +37,32 @@ public class ConnectionDefinition : IConnectionDefinition
                 {
                     // Property user-friendly name that will be displayed on the UI
                     DisplayName = "API token",
-                    
+
                     // Setting this flag to true hides token input, replacing each its character with •
                     Sensitive = true,
                     // Description of the connection property,
                     // perhaps with some guidelines on how to find it in the service
                     Description = "You can create API token in your profile settings, on the API tab"
+                },
+                new(CredsNames.ApiType)
+                {
+                    // Property user-friendly name that will be displayed on the UI
+                    DisplayName = "API token",
+
+                    // Setting this flag to false does not hide the input
+                    Sensitive = false,
+                    // Description of the connection property,
+                    // perhaps with some guidelines on how to find it in the service
+                    Description = "API version",
+                    // Static possible inputs for the connection property.
+                    // Array of objects where first element is a value needed for the API and second element is a user-friendly name.
+                    DataItems = [new("v1", "Version 1"), new("v2", "Version 2")]
                 }
             }
         }
     };
 
-    
+
     /// <summary>
     /// Processes credentials after the authorization is done 
     /// </summary>
@@ -60,18 +73,10 @@ public class ConnectionDefinition : IConnectionDefinition
     {
         // Processing OAuth credentials
         // var accessToken = values.First(v => v.Key == CredsNames.AccessToken);
-        // yield return new AuthenticationCredentialsProvider(
-        //     AuthenticationCredentialsRequestLocation.Header,
-        //     "Authorization",
-        //     $"Bearer {accessToken.Value}"
-        // );
-        
+        // yield return new AuthenticationCredentialsProvider("Authorization", $"Bearer {accessToken.Value}");
+
         // Processing API key credentials
         var apiKey = values.First(v => v.Key == CredsNames.ApiToken);
-        yield return new AuthenticationCredentialsProvider(
-            AuthenticationCredentialsRequestLocation.Header,
-            apiKey.Key,
-            apiKey.Value
-        );
+        yield return new AuthenticationCredentialsProvider(apiKey.Key, apiKey.Value);
     }
 }
