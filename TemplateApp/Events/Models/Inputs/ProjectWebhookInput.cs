@@ -1,6 +1,6 @@
 ﻿using Blackbird.Applications.Sdk.Common;
 
-namespace TemplateApp.Webhooks.Models.Inputs;
+namespace TemplateApp.Events.Models.Inputs;
 
 public class ProjectWebhookInput
 {

@@ -1,6 +1,6 @@
 ﻿using Blackbird.Applications.Sdk.Common;
 
-namespace TemplateApp.Webhooks.Models.Payload;
+namespace TemplateApp.Events.Models.Payload;
 
 public class CallbackPayload
 {

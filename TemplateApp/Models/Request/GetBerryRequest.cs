@@ -1,4 +1,5 @@
 ﻿using Blackbird.Applications.Sdk.Common;
+using Blackbird.Applications.Sdk.Common.Dictionaries;
 using Blackbird.Applications.Sdk.Common.Dynamic;
 using TemplateApp.DataSourceHandlers;
 
@@ -14,4 +15,8 @@ public class GetBerryRequest
     // Applying data source handler to the property
     [DataSource(typeof(AsyncDataSourceHandler))]
     public string BerryName { get; set; }
+
+    [Display("Pokemon type")]
+    [StaticDataSource(typeof(StaticDataSourceHandler))]
+    public string PokemonType { get; set; }
 }

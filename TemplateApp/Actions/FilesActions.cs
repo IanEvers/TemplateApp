@@ -1,5 +1,7 @@
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
+using Blackbird.Applications.Sdk.Common.Exceptions;
+using Blackbird.Applications.Sdk.Common.Files;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 using RestSharp;
@@ -37,14 +39,28 @@ public class FilesActions : AppInvocable
 
         // Throwing error if status code is not successful
         if (!response.IsSuccessStatusCode)
-            throw new($"Could not download your file; Code: {response.StatusCode}");
+            throw new PluginApplicationException($"Could not download your file; Code: {response.StatusCode}");
 
         // Uploading downloaded file to Blackbird
         var file = await _fileManagementClient.UploadAsync(new MemoryStream(response.RawBytes!), response.ContentType!,
             input.FileName);
         return new(file);
-    }    
-    
+    }
+
+    /// <summary>
+    /// Demonstration of downloading a large file with IFileManagementClient
+    /// </summary>
+    /// <param name="input">Action parameter with the data for downloading the file</param>
+    /// <returns>File data</returns>
+    [Action("Download large file", Description = "Download a large file efficiently")]
+    public async Task<FileResponse> DownloadLargeFile([ActionParameter] DownloadFileRequest input)
+    {
+        // In this case the Blackbird core will download the file efficiently, without a strain on time or memory.
+        var request = new HttpRequestMessage(HttpMethod.Get, input.FileUrl);
+        var file = new FileReference(request, input.FileName, "text/html");
+        return new(file);
+    }
+
     /// <summary>
     /// Demonstration of uploading file with IFileManagementClient
     /// </summary>
@@ -62,6 +78,6 @@ public class FilesActions : AppInvocable
 
         // Throwing error if status code is not successful
         if (!response.IsSuccessStatusCode)
-            throw new($"Could not upload your file; Code: {response.StatusCode}");
+            throw new PluginApplicationException($"Could not upload your file; Code: {response.StatusCode}");
     } 
 }

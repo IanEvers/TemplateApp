@@ -3,10 +3,10 @@ using Blackbird.Applications.Sdk.Common.Webhooks;
 using RestSharp;
 using TemplateApp.Constants;
 using TemplateApp.RestSharp;
-using TemplateApp.Webhooks.Models.Inputs;
-using TemplateApp.Webhooks.Models.Request;
+using TemplateApp.Events.Models.Inputs;
+using TemplateApp.Events.Models.Request;
 
-namespace TemplateApp.Webhooks.Handlers.Base;
+namespace TemplateApp.Events.Handlers.Base;
 
 /// <summary>
 /// Base handler for webhooks with project ID parameter

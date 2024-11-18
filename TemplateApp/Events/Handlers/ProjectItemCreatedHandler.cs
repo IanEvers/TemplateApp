@@ -1,8 +1,8 @@
 ﻿using Blackbird.Applications.Sdk.Common.Webhooks;
-using TemplateApp.Webhooks.Handlers.Base;
-using TemplateApp.Webhooks.Models.Inputs;
+using TemplateApp.Events.Handlers.Base;
+using TemplateApp.Events.Models.Inputs;
 
-namespace TemplateApp.Webhooks.Handlers;
+namespace TemplateApp.Events.Handlers;
 
 public class ProjectItemCreatedHandler : ProjectWebhookHandler
 {

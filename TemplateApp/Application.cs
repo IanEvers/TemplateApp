@@ -1,11 +1,12 @@
 ﻿using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Authentication.OAuth2;
 using Blackbird.Applications.Sdk.Common.Invocation;
+using Blackbird.Applications.Sdk.Common.Metadata;
 using TemplateApp.Connections.OAuth;
 
 namespace TemplateApp;
 
-public class Application : BaseInvocable,  IApplication
+public class Application : BaseInvocable,  IApplication, ICategoryProvider
 {
     private readonly Dictionary<Type, object> _typesInstances;
 
@@ -13,6 +14,12 @@ public class Application : BaseInvocable,  IApplication
     {
         // Creating OAuth service instances
        // _typesInstances = CreateTypesInstances();
+    }
+
+    public IEnumerable<ApplicationCategory> Categories 
+    {
+        get => [];
+        set { }
     }
 
     /// <summary>

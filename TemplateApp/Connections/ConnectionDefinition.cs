@@ -28,7 +28,6 @@ public class ConnectionDefinition : IConnectionDefinition
         {
             Name = "Developer API token",
             AuthenticationType = ConnectionAuthenticationType.Undefined,
-            ConnectionUsage = ConnectionUsage.Actions,
 
             // Specifying properties that we will need for authorization of the app
             ConnectionProperties = new List<ConnectionProperty>

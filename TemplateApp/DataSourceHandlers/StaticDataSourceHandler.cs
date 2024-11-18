@@ -8,7 +8,7 @@ namespace TemplateApp.DataSourceHandlers;
 /// Fetches static data, can be used e.g. for enums
 /// Implements IStaticDataSourceItemHandler interface
 /// </summary>
-public class SyncDataSourceHandler : IStaticDataSourceItemHandler
+public class StaticDataSourceHandler : IStaticDataSourceItemHandler
 {
     public IEnumerable<DataSourceItem> GetData() =>
     [

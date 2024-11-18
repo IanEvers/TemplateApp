@@ -1,7 +1,7 @@
 using Blackbird.Applications.Sdk.Common.Authentication;
 using Blackbird.Applications.Sdk.Common.Webhooks;
 
-namespace TemplateApp.Webhooks.Handlers.Base;
+namespace TemplateApp.Events.Handlers.Base;
 
 /// <summary>
 /// Webhook handler that can resubscribe to events when they expired

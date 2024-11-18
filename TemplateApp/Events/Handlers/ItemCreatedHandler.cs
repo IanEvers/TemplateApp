@@ -1,6 +1,6 @@
-﻿using TemplateApp.Webhooks.Handlers.Base;
+﻿using TemplateApp.Events.Handlers.Base;
 
-namespace TemplateApp.Webhooks.Handlers;
+namespace TemplateApp.Events.Handlers;
 
 /// <summary>
 /// Handler for item.created webhook

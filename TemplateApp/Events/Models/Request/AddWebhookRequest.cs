@@ -1,4 +1,4 @@
-﻿namespace TemplateApp.Webhooks.Models.Request;
+﻿namespace TemplateApp.Events.Models.Request;
 
 public class AddWebhookRequest
 {

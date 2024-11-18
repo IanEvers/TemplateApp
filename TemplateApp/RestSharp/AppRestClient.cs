@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Blackbird.Applications.Sdk.Common.Exceptions;
+using Newtonsoft.Json;
 using RestSharp;
 using TemplateApp.Constants;
 
@@ -23,6 +24,6 @@ public class AppRestClient : RestClient
         if (response.IsSuccessStatusCode)
             return response;
         
-        throw new(response.Content);
+        throw new PluginApplicationException(response.Content);
     }
 }

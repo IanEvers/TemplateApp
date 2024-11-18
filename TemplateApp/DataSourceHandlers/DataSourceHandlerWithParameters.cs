@@ -11,7 +11,7 @@ namespace TemplateApp.DataSourceHandlers;
 /// <summary>
 /// Data source handler that can take parameters from user inputs
 /// </summary>
-public class DataSourceHandlerWithParameters : AppInvocable, IAsyncDataSourceHandler
+public class DataSourceHandlerWithParameters : AppInvocable, IAsyncDataSourceItemHandler
 {
     // Saving input model to use it while fetching data
     private readonly DataSourceWithParametersRequest _request;
@@ -23,8 +23,7 @@ public class DataSourceHandlerWithParameters : AppInvocable, IAsyncDataSourceHan
         _request = request;
     }
 
-    public async Task<Dictionary<string, string>> GetDataAsync(DataSourceContext context,
-        CancellationToken cancellationToken)
+    public async Task<IEnumerable<DataSourceItem>> GetDataAsync(DataSourceContext context, CancellationToken cancellationToken)
     {
         // Throwing error if parameters are not specified
         if (string.IsNullOrWhiteSpace(_request.Url))
@@ -35,6 +34,6 @@ public class DataSourceHandlerWithParameters : AppInvocable, IAsyncDataSourceHan
 
         // Fetching data based on provided parameters
         var request = new AppRestRequest($"{_request.Url}/{_request.EntityId}", Method.Get, Creds);
-        return await Client.ExecuteWithHandling<Dictionary<string, string>>(request);
+        return await Client.ExecuteWithHandling<IEnumerable<DataSourceItem>>(request);
     }
 }

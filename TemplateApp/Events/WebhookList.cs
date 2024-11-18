@@ -1,16 +1,28 @@
-﻿using Blackbird.Applications.Sdk.Common.Webhooks;
+﻿using Blackbird.Applications.Sdk.Common;
+using Blackbird.Applications.Sdk.Common.Exceptions;
+using Blackbird.Applications.Sdk.Common.Invocation;
+using Blackbird.Applications.Sdk.Common.Webhooks;
 using Newtonsoft.Json;
-using TemplateApp.Webhooks.Handlers;
-using TemplateApp.Webhooks.Models.Payload;
+using TemplateApp.Events.Handlers;
+using TemplateApp.Events.Models.Payload;
+using TemplateApp.Invocables;
 
-namespace TemplateApp.Webhooks;
+namespace TemplateApp.Events;
 
 /// <summary>
 /// Contains list of webhooks
 /// </summary>
 [WebhookList]
-public class WebhookList
+public class WebhookList : AppInvocable
 {
+    #region Constructors
+
+    public WebhookList(InvocationContext invocationContext) : base(invocationContext)
+    {
+    }
+
+    #endregion
+
     #region Webhooks
 
     /// <summary>
@@ -40,10 +52,15 @@ public class WebhookList
 
     private Task<WebhookResponse<T>> HandlerWebhook<T>(WebhookRequest webhookRequest) where T : class
     {
-        var data = JsonConvert.DeserializeObject<T>(webhookRequest.Body.ToString());
+        var body = webhookRequest.Body.ToString();
+
+        if (body is null)
+            throw new PluginApplicationException("The app did not return any content");
+
+        var data = JsonConvert.DeserializeObject<T>(body);
 
         if (data is null)
-            throw new InvalidCastException(nameof(webhookRequest.Body));
+            throw new PluginApplicationException("The app did not return any content");
 
         return Task.FromResult(new WebhookResponse<T>
         {

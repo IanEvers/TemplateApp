@@ -12,21 +12,18 @@ namespace TemplateApp.DataSourceHandlers;
 
 /// <summary>
 /// Data source handler for asynchronous dynamic inputs.
-/// It provides static data on the UI, so that user can choose values from the dropdown instead of printing it manually.
+/// It provides data on the UI, so that user can choose values from the dropdown instead of inputting it manually.
 /// </summary>
-public class AsyncDataSourceHandler : AppInvocable, IAsyncDataSourceHandler
+public class AsyncDataSourceHandler : AppInvocable, IAsyncDataSourceItemHandler
 {
     public AsyncDataSourceHandler(InvocationContext invocationContext) : base(invocationContext)
     {
     }
 
     /// <summary>
-    /// Fetches data for the dynamic inputs and returns it as a dictionary.
-    /// Key of the dictionary represents data needed in the app itself, e.g. ID.
-    /// Values is displayed to user in the UI, so that it should be a user-friendly name of the item
+    /// Fetches data for the dynamic inputs and returns it as a list of options.
     /// </summary>
-    public async Task<Dictionary<string, string>> GetDataAsync(DataSourceContext context,
-        CancellationToken cancellationToken)
+    public async Task<IEnumerable<DataSourceItem>> GetDataAsync(DataSourceContext context, CancellationToken cancellationToken)
     {
         var request = new AppRestRequest(ApiEndpoints.Berry, Method.Get, Creds);
         var response = await Client.ExecuteWithHandling<ListResponse<Berry>>(request);
@@ -36,6 +33,6 @@ public class AsyncDataSourceHandler : AppInvocable, IAsyncDataSourceHandler
             // So that we return only values that match user search request
             .Where(x => context.SearchString == null ||
                         x.Name.Contains(context.SearchString, StringComparison.OrdinalIgnoreCase))
-            .ToDictionary(x => x.Name, x => x.Name.ToPascalCase());
+            .Select(x => new DataSourceItem(x.Id, x.Name));
     }
 }
