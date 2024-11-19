@@ -1,4 +1,6 @@
-﻿using Blackbird.Applications.Sdk.Common.Invocation;
+﻿using Blackbird.Applications.Sdk.Common;
+using Blackbird.Applications.Sdk.Common.Dictionaries;
+using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.Sdk.Common.Polling;
 using RestSharp;
 using System;
@@ -28,7 +30,8 @@ public class PollingList : AppInvocable
     #endregion
 
     [PollingEvent("On polled event", "This is triggered periodically, depending on the user's prefered input.")]
-    public async Task<PollingEventResponse<Memory, PollingResponse>> OnProjectCreated(PollingEventRequest<Memory> request)
+    public async Task<PollingEventResponse<Memory, PollingResponse>> OnProjectCreated(PollingEventRequest<Memory> request, 
+        [PollingEventParameter][Display("Project status")] string status)
     {
         var berriesRequest = new AppRestRequest(ApiEndpoints.Berry, Method.Get, Creds);
         var response = await Client.ExecuteWithHandling<ListResponse<Berry>>(berriesRequest);
@@ -45,6 +48,7 @@ public class PollingList : AppInvocable
                 }
             };
         }
+        // Note: if your event has event parameters then you probably want to structure your logic differently in order to handle cases for checkpoints.
 
         // Check if there are any new berries since the last poll
         var newBerries = response.Results.Where(x => !request.Memory.AllBerries.Select(y => y.Id).Contains(x.Id));
