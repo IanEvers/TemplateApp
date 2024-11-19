@@ -46,7 +46,7 @@ public class ConnectionDefinition : IConnectionDefinition
                 new(CredsNames.ApiType)
                 {
                     // Property user-friendly name that will be displayed on the UI
-                    DisplayName = "API token",
+                    DisplayName = "API version",
 
                     // Setting this flag to false does not hide the input
                     Sensitive = false,
