@@ -16,6 +16,7 @@ using TemplateApp.RestSharp;
 
 namespace TemplateApp.Events;
 
+[PollingEventList]
 public class PollingList : AppInvocable
 {
     #region Constructors
