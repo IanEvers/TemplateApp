@@ -3,6 +3,7 @@ using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
 using Blackbird.Applications.Sdk.Common.Files;
 using Blackbird.Applications.Sdk.Common.Invocation;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 using RestSharp;
 using FileConverter.Constants;
 using FileConverter.Invocables;
@@ -12,6 +13,7 @@ using FileConverter.Models.Response;
 using FileConverter.RestSharp;
 using ConvertApiDotNet;
 using ConvertApiDotNet.Exceptions;
+
 using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 namespace FileConverter.Actions;
 
@@ -53,14 +55,12 @@ public class Actions : AppInvocable
         [ActionParameter] DocumentTranslationRequest input
     )
     {
+        if (input.File == null || string.IsNullOrEmpty(input.File.Url))
+        {
+            throw new PluginMisconfigurationException("No file provided. Please provide a valid file and try again.");
+        }
         try
         {
-            if (input?.File == null)
-            {
-                Console.WriteLine("Error: Input file is null");
-                throw new ArgumentNullException(nameof(input.File), "Input file cannot be null");
-            }
-
             var convertApi = new ConvertApi(ConvertApiToken);
 
             var destinationFileName = Path.Combine(".", $"result-{Guid.NewGuid()}.pdf");
@@ -68,7 +68,7 @@ public class Actions : AppInvocable
             var convertTask = await convertApi.ConvertAsync(
                 "docx", 
                 "pdf",
-                new ConvertApiFileParam(/*input.File.Url*/"DenunciaSiniestro.docx")
+                new ConvertApiFileParam(input.File.Url)
             );
 
             Console.WriteLine("Converted file: " + convertTask.Files.First().FileName);
@@ -87,12 +87,13 @@ public class Actions : AppInvocable
         {
             Console.WriteLine("Status Code: " + e.StatusCode);
             Console.WriteLine("Response: " + e.Response);
-            throw new($"Could not download your file; ", e);
+            throw new PluginMisconfigurationException(e.Response);
+
         }
         catch (Exception ex)
         {
             Console.WriteLine("An error occurred: " + ex.Message);
-            throw new($"Could not download your file; ", ex);
+            throw new PluginMisconfigurationException(ex.Message);
         }
     }
 
@@ -104,14 +105,21 @@ public class Actions : AppInvocable
         [ActionParameter] DocumentTranslationRequest input
     )
     {
+        if (input.File == null || string.IsNullOrEmpty(input.File.Url))
+        {
+            throw new PluginMisconfigurationException("No file provided. Please provide a valid file and try again.");
+        }
         try
         {
             var convertApi = new ConvertApi(ConvertApiToken);
 
-            var destinationFileName = Path.Combine(".", $"result-{Guid.NewGuid()}.docx");
+            var destinationFileName = Path.Combine(".", $"{input.File.Name}.docx");
 
-            var convertTask = await convertApi.ConvertAsync("pdf", "docx",
-                new ConvertApiFileParam(/*input.File.Url*/"pdf-bitacora.pdf"));
+            var convertTask = await convertApi.ConvertAsync(
+                "pdf", 
+                "docx",
+                new ConvertApiFileParam(input.File.Url)
+            );
 
             Console.WriteLine("Converted file: " + convertTask.Files.First().FileName);
 
@@ -134,7 +142,7 @@ public class Actions : AppInvocable
         catch (Exception ex)
         {
             Console.WriteLine("An error occurred: " + ex.Message);
-            throw new($"Could not download your file; ", ex);
+            throw new PluginMisconfigurationException(ex.Message);
         }
     }
 
